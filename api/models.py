@@ -21,3 +21,9 @@ class Room(models.Model):
     votes_to_skip = models.IntegerField(null=False, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.code = generate_unique_code()
+
+        super().save(*args, **kwargs)
+

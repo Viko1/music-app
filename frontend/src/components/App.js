@@ -7,13 +7,16 @@ import HomePage from "./HomePage"
 export default class App extends Component{
    constructor(props) {
       super(props);
+      this.state = {
+         guestCanPause: true,
+
+      }
    }
 
 
    render() {
       return (
          <div>
-            <h1> Test website</h1>
             <HomePage/>
          </div>
 
