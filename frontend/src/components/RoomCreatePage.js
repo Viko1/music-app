@@ -17,6 +17,29 @@ export default class RoomCreatePage extends Component{
 
    constructor(props) {
       super(props);
+      this.state ={
+         guestCanPause: true,
+         votesToSkip: this.defaultVotes,
+
+
+      };
+      this.handleRoomButtonPressed = this.handleRoomButtonPressed(this)
+   }
+
+   handleVotesChange(e) {
+      this.setState({
+         votesToSkip: e.target.value,
+      });
+   }
+
+   handleGuestCanPauseChange(e) {
+      this.setState({
+         guestCanPause: e.target.value === "true" ? true : false,
+      })
+   }
+
+   handleRoomButtonPressed() {
+      console.log(this.state)
    }
 
    render() {
@@ -31,7 +54,7 @@ export default class RoomCreatePage extends Component{
                <FormHelperText>
                   <div align="center">Guest Control of Playback State</div>
                </FormHelperText>
-               <RadiorGroup row defaultValue='true'>
+               <RadiorGroup row defaultValue='true' onChange={this.handleGuestCanPauseChange}>
                   <FormControlLabel value="true" control={<Radio color="primary"/>}
                                     label="Play/Pause" labelPlacement="bottom"/>
                   <FormControlLabel value="false" control={<Radio color="secondary"/>}
@@ -43,6 +66,7 @@ export default class RoomCreatePage extends Component{
             <FormControl>
                <TextField required="true"
                           type="number"
+                          onChange={this.handleVotesChange}
                           defaultValue={this.defaultVotes}
                           inputProps={{
                              min:1,
@@ -56,7 +80,7 @@ export default class RoomCreatePage extends Component{
             </FormControl>
          </Grid>
          <Grid item xs={12} align="center">
-            <Button color="primary" variant="contained">Create A Room</Button>
+            <Button color="primary" variant="contained" onClick={this.handleRoomButtonPressed}>Create A Room</Button>
          </Grid>
          <Grid item xs={12} align="center">
             <Button color="secondary" variant="contained" to="/" component={Link}>Back</Button>
