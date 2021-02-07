@@ -9,7 +9,8 @@ export default class RoomJoinPage extends Component{
          roomCode: "",
          error: ""
       };
-      this._hadleTextFieldChange = this._hadleTextFieldChange.bind(this);
+      this.hadleTextFieldChange = this.hadleTextFieldChange.bind(this);
+      this.roomButtonPressed = this.roomButtonPressed.bind(this);
    }
 
    render() {
@@ -28,11 +29,11 @@ export default class RoomJoinPage extends Component{
                   value={this.state.roomCode}
                   helperText={this.state.error}
                   variant='outlined'
-                  onChange={this._hadleTextFieldChange}
+                  onChange={this.hadleTextFieldChange}
                />
             </Grid>
             <Grid item xs={12} align='center'>
-               <Button variant='contained' color='primary' onClick>
+               <Button variant='contained' color='primary' onClick={this.roomButtonPressed}>
                   Enter Room
                </Button>
             </Grid>
@@ -45,14 +46,31 @@ export default class RoomJoinPage extends Component{
       )
    }
 
-   _hadleTextFieldChange(e){
+   hadleTextFieldChange(e){
       this.setState({
          roomCode: e.target.value,
       })
    }
 
-   _roomButtonPressed() {
-
+   roomButtonPressed() {
+      const requestOptions = {
+         method: "POST",
+         headers: {"Content-Type": "application/json"},
+         body: JSON.stringify({
+            code: this.state.roomCode
+         })
+      };
+      fetch('/api/join-room', requestOptions)
+         .then((response)=> {
+            if (response.ok) {
+               this.props.history.push(`/room/${this.state.roomCode}`)
+            } else {
+               this.setState({error: 'Room not found.'});
+            }
+      })
+         .catch((error) => {
+            console.log(error)
+         })
    }
 
 
